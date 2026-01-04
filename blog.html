@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog | CredSync Insights</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        /* Base Settings - Matching index.html */
+        body {
+            background-color: #020617; /* Slate 950 */
+            color: #e2e8f0; /* Slate 200 */
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Backgrounds */
+        .bg-grid {
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+            mask-image: linear-gradient(to bottom, transparent, 10%, black, 90%, transparent);
+        }
+
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .glass-panel:hover {
+            border-color: rgba(99, 102, 241, 0.3);
+            background: rgba(15, 23, 42, 0.6);
+            transform: translateY(-4px);
+        }
+
+        /* Animations */
+        .reveal-hidden {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s cubic-bezier(0.5, 0, 0, 1);
+        }
+        .reveal-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .stagger-1 { transition-delay: 100ms; }
+        .stagger-2 { transition-delay: 200ms; }
+        .stagger-3 { transition-delay: 300ms; }
+    </style>
+</head>
+<body class="relative min-h-screen flex flex-col">
+
+    <div class="fixed inset-0 z-0 pointer-events-none bg-grid opacity-100 h-full w-full"></div>
+    <div class="fixed top-[-10%] left-[-10%] w-[500px] h-[500px] bg-indigo-600/10 rounded-full blur-[100px] pointer-events-none z-0"></div>
+
+    <nav class="w-full z-50 border-b border-white/5 bg-slate-950/50 backdrop-blur-md sticky top-0">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <a href="index.html" class="text-lg font-semibold tracking-tight text-white flex items-center gap-2 group">
+                <div class="w-5 h-5 bg-indigo-500 rounded-sm flex items-center justify-center group-hover:bg-indigo-400 transition-colors">
+                    <div class="w-2.5 h-2.5 bg-white rounded-[1px]"></div>
+                </div>
+                CredSync
+            </a>
+            <div class="flex items-center gap-6">
+                
+                <a href="index.html" class="text-sm text-slate-400 hover:text-white flex items-center gap-2 transition-colors">
+                    Back to Home <i data-lucide="arrow-right" class="w-4 h-4"></i> 
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="pt-20 pb-16 px-6 relative z-10 text-center">
+        <div class="max-w-3xl mx-auto reveal-hidden">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-300 text-xs font-medium mb-6">
+                Engineering &amp; Research
+            </div>
+            <h1 class="text-4xl md:text-5xl font-medium tracking-tight text-white mb-6">
+                Latest Insights
+            </h1>
+            <p class="text-lg text-slate-400 leading-relaxed">
+                Deep dives into real-world asset protocols, supply chain data structures, and the future of on-chain credit.
+            </p>
+        </div>
+    </header>
+
+    <main class="flex-grow px-6 pb-24 relative z-10">
+        <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            
+            <article class="glass-panel rounded-xl overflow-hidden group cursor-pointer reveal-hidden stagger-1">
+                <div class="h-48 bg-slate-900/50 border-b border-white/5 relative overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-tr from-indigo-500/20 to-transparent opacity-50 group-hover:opacity-70 transition-opacity"></div>
+                    <div class="absolute bottom-4 left-4">
+                        <span class="text-xs font-mono text-indigo-300 bg-black/50 px-2 py-1 rounded border border-white/10">Architecture</span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center gap-2 text-xs text-slate-500 mb-3">
+                        <span>Oct 24, 2024</span> &bull; <span>5 min read</span>
+                    </div>
+                    <h2 class="text-xl font-medium text-white mb-3 group-hover:text-indigo-400 transition-colors">The State of RWA: Moving beyond T-Bills</h2>
+                    <p class="text-sm text-slate-400 line-clamp-3 mb-4">
+                        Why the next wave of RWA adoption will come from short-duration supply chain assets, not just tokenized treasuries.
+                    </p>
+                    <div class="flex items-center gap-2 text-sm text-indigo-400 font-medium">
+                        Read Article <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                    </div>
+                </div>
+            </article>
+
+            <article class="glass-panel rounded-xl overflow-hidden group cursor-pointer reveal-hidden stagger-2">
+                <div class="h-48 bg-slate-900/50 border-b border-white/5 relative overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-tl from-purple-500/20 to-transparent opacity-50 group-hover:opacity-70 transition-opacity"></div>
+                    <div class="absolute bottom-4 left-4">
+                        <span class="text-xs font-mono text-purple-300 bg-black/50 px-2 py-1 rounded border border-white/10">Engineering</span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center gap-2 text-xs text-slate-500 mb-3">
+                        <span>Oct 12, 2024</span> &bull; <span>8 min read</span>
+                    </div>
+                    <h2 class="text-xl font-medium text-white mb-3 group-hover:text-indigo-400 transition-colors">Zero-Knowledge Proofs in Invoice Factoring</h2>
+                    <p class="text-sm text-slate-400 line-clamp-3 mb-4">
+                        How we use ZK proofs to validate invoice uniqueness across multiple banks without revealing sensitive supplier data.
+                    </p>
+                    <div class="flex items-center gap-2 text-sm text-indigo-400 font-medium">
+                        Read Article <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                    </div>
+                </div>
+            </article>
+
+            <article class="glass-panel rounded-xl overflow-hidden group cursor-pointer reveal-hidden stagger-3">
+                <div class="h-48 bg-slate-900/50 border-b border-white/5 relative overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/20 to-transparent opacity-50 group-hover:opacity-70 transition-opacity"></div>
+                    <div class="absolute bottom-4 left-4">
+                        <span class="text-xs font-mono text-emerald-300 bg-black/50 px-2 py-1 rounded border border-white/10">Ecosystem</span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center gap-2 text-xs text-slate-500 mb-3">
+                        <span>Sep 28, 2024</span> &bull; <span>4 min read</span>
+                    </div>
+                    <h2 class="text-xl font-medium text-white mb-3 group-hover:text-indigo-400 transition-colors">Partnership Announcement: EcoVolt</h2>
+                    <p class="text-sm text-slate-400 line-clamp-3 mb-4">
+                        We are thrilled to announce our first major institutional pilot program bringing $1.5M of liquidity on-chain.
+                    </p>
+                    <div class="flex items-center gap-2 text-sm text-indigo-400 font-medium">
+                        Read Article <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                    </div>
+                </div>
+            </article>
+
+        </div>
+    </main>
+
+    <footer class="py-8 text-center text-xs text-slate-600 border-t border-white/5 bg-slate-950 relative z-10">
+        &copy; 2026 CredSync Inc.
+    </footer>
+
+    <script>
+        lucide.createIcons();
+        window.addEventListener('load', () => {
+            document.querySelectorAll('.reveal-hidden').forEach(el => el.classList.add('reveal-visible'));
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CredSync | Modular On-Chain Credit Infrastructure</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        /* Base Settings */
+        body {
+            background-color: #020617; /* Slate 950 */
+            color: #e2e8f0; /* Slate 200 */
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- Custom Scrollbar --- */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #020617; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+        /* --- Backgrounds --- */
+        .bg-grid {
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+            mask-image: linear-gradient(to bottom, transparent, 10%, black, 90%, transparent);
+            -webkit-mask-image: linear-gradient(to bottom, transparent, 5%, black, 90%, transparent);
+        }
+
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        /* --- Animation Classes --- */
+        /* These classes prepare elements to be animated by JS */
+        
+        .reveal-hidden {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+
+        .reveal-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Staggered delays for children */
+        .stagger-1 { transition-delay: 100ms; }
+        .stagger-2 { transition-delay: 200ms; }
+        .stagger-3 { transition-delay: 300ms; }
+
+        /* Scale Animation */
+        .scale-hidden {
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 0.6s ease-out;
+        }
+        .scale-visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Typing Cursor */
+        .typing-cursor::after {
+            content: '|';
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* Card Hover Glow */
+        .hover-glow:hover {
+            box-shadow: 0 0 30px -10px rgba(99, 102, 241, 0.3);
+            border-color: rgba(99, 102, 241, 0.4);
+            transform: translateY(-5px);
+        }
+
+        /* Hero Floating Animation */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="relative overflow-x-hidden selection:bg-indigo-500/30 selection:text-indigo-200">
+
+    <div class="fixed inset-0 z-0 pointer-events-none bg-grid opacity-100 h-full w-full"></div>
+    
+    <div class="fixed top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-indigo-600/10 rounded-full blur-[120px] pointer-events-none z-0"></div>
+
+    <nav class="fixed top-0 w-full z-50 border-b border-white/5 bg-slate-950/80 backdrop-blur-md transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-8">
+                <a href="#" class="text-lg font-semibold tracking-tight text-white flex items-center gap-2 group">
+                    <div class="w-5 h-5 bg-indigo-500 rounded-sm flex items-center justify-center group-hover:bg-indigo-400 transition-colors">
+                        <div class="w-2.5 h-2.5 bg-white rounded-[1px]"></div>
+                    </div>
+                    CredSync
+                </a>
+                <div class="hidden md:flex items-center gap-6 text-sm text-slate-400">
+                    <a href="#product" class="hover:text-white transition-colors relative after:absolute after:bottom-[-20px] after:left-0 after:w-0 after:h-[2px] after:bg-indigo-500 hover:after:w-full after:transition-all">Product</a>
+                    <a href="#solutions" class="hover:text-white transition-colors relative after:absolute after:bottom-[-20px] after:left-0 after:w-0 after:h-[2px] after:bg-indigo-500 hover:after:w-full after:transition-all">Solutions</a>
+                    <a href="#developers" class="hover:text-white transition-colors relative after:absolute after:bottom-[-20px] after:left-0 after:w-0 after:h-[2px] after:bg-indigo-500 hover:after:w-full after:transition-all">Developers</a>
+                    <a href="blog.html" class="hover:text-white transition-colors relative after:absolute after:bottom-[-20px] after:left-0 after:w-0 after:h-[2px] after:bg-indigo-500 hover:after:w-full after:transition-all">Blog</a>
+                    <a href="career.html" class="hover:text-white transition-colors relative after:absolute after:bottom-[-20px] after:left-0 after:w-0 after:h-[2px] after:bg-indigo-500 hover:after:w-full after:transition-all">Careers</a>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                
+                <a href="comingsoon.html" class="text-xs font-medium bg-white text-black px-4 py-2 rounded-full hover:bg-slate-200 hover:scale-105 transition-all shadow-[0_0_15px_rgba(255,255,255,0.2)]">
+                    Request Demo
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="relative z-10 pt-32 pb-20 md:pt-48 md:pb-32 px-6">
+        <div class="max-w-5xl mx-auto text-center">
+            
+            <div class="reveal-hidden inline-flex items-center gap-2 px-3 py-1 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-300 text-xs font-medium mb-8">
+                <span class="relative flex h-2 w-2">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
+                </span>
+                Introducing Modular Credit Infrastructure
+            </div>
+            
+            <h1 class="reveal-hidden stagger-1 text-4xl md:text-6xl lg:text-7xl font-medium tracking-tight text-white mb-6">
+                Modular on-chain credit infra <br class="hidden md:block">
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-slate-200 via-white to-slate-400">powered by real supply-chain data.</span>
+            </h1>
+            
+            <p class="reveal-hidden stagger-2 text-lg md:text-xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+                CredSync exposes verifiable invoices, risk models, and capital workflows as programmable primitives for banks, NBFCs, and DeFi protocols.
+            </p>
+            
+            <div class="reveal-hidden stagger-3 flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="contact.html" class="w-full sm:w-auto px-6 py-3 bg-white text-black text-sm font-medium rounded-lg hover:bg-indigo-50 transition-all flex items-center justify-center gap-2 group shadow-lg hover:shadow-indigo-500/20 hover:-translate-y-0.5">
+                    Talk to our team
+                    <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                </a>
+                <a href="docs.html" class="w-full sm:w-auto px-6 py-3 border border-white/10 bg-white/5 text-white text-sm font-medium rounded-lg hover:bg-white/10 transition-all flex items-center justify-center gap-2 hover:-translate-y-0.5">
+                    <i data-lucide="code-2" class="w-4 h-4 text-slate-400"></i>
+                    View API Docs
+                </a>
+            </div>
+        </div>
+
+        <div class="mt-24 pt-10 border-t border-white/5 max-w-6xl mx-auto reveal-hidden stagger-3">
+            <p class="text-center text-xs text-slate-500 uppercase tracking-widest mb-8">Trusted by forward-thinking institutions</p>
+            <div class="flex flex-wrap justify-center items-center gap-12 md:gap-20 opacity-50 grayscale hover:grayscale-0 transition-all duration-700">
+                <span class="text-xl font-semibold tracking-tight font-sans hover:text-white transition-colors cursor-default">APEX<span class="font-light">BANK</span></span>
+                <span class="text-xl font-bold tracking-tighter italic font-serif hover:text-white transition-colors cursor-default">ECOVOLT</span>
+                <span class="text-lg font-medium tracking-widest font-mono hover:text-white transition-colors cursor-default">BLOC<span class="text-indigo-500">K</span>FUND</span>
+                <span class="text-xl font-bold tracking-tight hover:text-white transition-colors cursor-default">OION</span>
+                <span class="text-xl font-semibold tracking-tight hover:text-white transition-colors cursor-default">TradeFlow</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 px-6 border-b border-white/5 bg-slate-900/30 relative z-10">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="reveal-hidden stagger-1 p-8 rounded-xl bg-slate-950 border border-white/10 hover-glow transition-all group cursor-default">
+                    <div class="w-10 h-10 rounded-lg bg-indigo-500/10 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-indigo-500/20 transition-all duration-300">
+                        <i data-lucide="database" class="w-5 h-5 text-indigo-400"></i>
+                    </div>
+                    <h3 class="text-lg font-medium text-white mb-3 tracking-tight">Deep-tier supply chain data</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        Access verifiable invoices, GST filings, shipment data, and payment behavior directly from source systems.
+                    </p>
+                </div>
+                <div class="reveal-hidden stagger-2 p-8 rounded-xl bg-slate-950 border border-white/10 hover-glow transition-all group cursor-default">
+                    <div class="w-10 h-10 rounded-lg bg-indigo-500/10 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-indigo-500/20 transition-all duration-300">
+                        <i data-lucide="blocks" class="w-5 h-5 text-indigo-400"></i>
+                    </div>
+                    <h3 class="text-lg font-medium text-white mb-3 tracking-tight">Credit-specific primitives</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        Pre-built modules for risk underwriting, liquidity pooling, and settlement—replacing generic L1/L2 infrastructure.
+                    </p>
+                </div>
+                <div class="reveal-hidden stagger-3 p-8 rounded-xl bg-slate-950 border border-white/10 hover-glow transition-all group cursor-default">
+                    <div class="w-10 h-10 rounded-lg bg-indigo-500/10 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-indigo-500/20 transition-all duration-300">
+                        <i data-lucide="shield-check" class="w-5 h-5 text-indigo-400"></i>
+                    </div>
+                    <h3 class="text-lg font-medium text-white mb-3 tracking-tight">Regulated &amp; DeFi Compliant</h3>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        Compliance-aware rails that bridge the gap, functioning seamlessly across both traditional and decentralized ecosystems.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 px-6 relative overflow-hidden" id="product">
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="text-center mb-16 reveal-hidden">
+                <h2 class="text-3xl md:text-4xl font-medium text-white tracking-tight mb-4">The CredSync Stack</h2>
+                <p class="text-slate-400">A unified architecture for programmable credit.</p>
+            </div>
+
+            <div class="relative flex flex-col gap-6 max-w-4xl mx-auto">
+                <div class="absolute left-8 top-8 bottom-8 w-0.5 bg-slate-800 hidden md:block overflow-hidden">
+                     <div class="w-full h-full bg-indigo-500/50 animate-float" style="height: 40%; filter: blur(4px);"></div>
+                </div>
+
+                <div class="relative pl-0 md:pl-20 group reveal-hidden stagger-1">
+                    <div class="absolute left-6 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-slate-950 border-2 border-indigo-500 z-10 hidden md:block group-hover:scale-125 transition-transform group-hover:shadow-[0_0_10px_rgba(99,102,241,0.5)]"></div>
+                    <div class="glass-panel p-8 rounded-xl hover:bg-slate-900/60 hover:border-indigo-500/30">
+                        <div class="flex flex-col md:flex-row gap-6 justify-between items-start md:items-center">
+                            <div>
+                                <h3 class="text-xl font-medium text-white mb-2 tracking-tight flex items-center gap-2">
+                                    <i data-lucide="layout-template" class="w-5 h-5 text-indigo-400"></i>
+                                    Application &amp; Settlement Layer
+                                </h3>
+                                <p class="text-sm text-slate-400 max-w-lg">
+                                    SDKs, APIs, and unified settlement rails to build custom credit flows across TradFi and DeFi.
+                                </p>
+                            </div>
+                            <div class="text-xs font-mono text-indigo-300 bg-indigo-500/10 px-3 py-1.5 rounded border border-indigo-500/20 whitespace-nowrap">
+                                API / SDK / Webhooks
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative pl-0 md:pl-20 group reveal-hidden stagger-2">
+                    <div class="absolute left-6 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-slate-950 border-2 border-indigo-500 z-10 hidden md:block group-hover:scale-125 transition-transform group-hover:shadow-[0_0_10px_rgba(99,102,241,0.5)]"></div>
+                    <div class="glass-panel p-8 rounded-xl hover:bg-slate-900/60 hover:border-indigo-500/30">
+                        <div class="flex flex-col md:flex-row gap-6 justify-between items-start md:items-center">
+                            <div>
+                                <h3 class="text-xl font-medium text-white mb-2 tracking-tight flex items-center gap-2">
+                                    <i data-lucide="landmark" class="w-5 h-5 text-indigo-400"></i>
+                                    Credit &amp; Liquidity Layer
+                                </h3>
+                                <p class="text-sm text-slate-400 max-w-lg">
+                                    Invoice pools, dynamic discounting markets, liquidity vaults, automated repayment via tokenized cashflows.
+                                </p>
+                            </div>
+                            <div class="text-xs font-mono text-indigo-300 bg-indigo-500/10 px-3 py-1.5 rounded border border-indigo-500/20 whitespace-nowrap">
+                                Vaults / Pools / Tranches
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative pl-0 md:pl-20 group reveal-hidden stagger-3">
+                    <div class="absolute left-6 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-slate-950 border-2 border-indigo-500 z-10 hidden md:block group-hover:scale-125 transition-transform group-hover:shadow-[0_0_10px_rgba(99,102,241,0.5)]"></div>
+                    <div class="glass-panel p-8 rounded-xl hover:bg-slate-900/60 hover:border-indigo-500/30">
+                        <div class="flex flex-col md:flex-row gap-6 justify-between items-start md:items-center">
+                            <div>
+                                <h3 class="text-xl font-medium text-white mb-2 tracking-tight flex items-center gap-2">
+                                    <i data-lucide="file-check" class="w-5 h-5 text-indigo-400"></i>
+                                    Data &amp; Risk Layer
+                                </h3>
+                                <p class="text-sm text-slate-400 max-w-lg">
+                                    Verified invoices, GST filings, shipment events, and reliability scores published as on-chain attestations.
+                                </p>
+                            </div>
+                            <div class="text-xs font-mono text-indigo-300 bg-indigo-500/10 px-3 py-1.5 rounded border border-indigo-500/20 whitespace-nowrap">
+                                Attestations / Oracles
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 px-6 border-t border-white/5 relative">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div class="reveal-hidden">
+                <div class="text-indigo-400 text-sm font-medium mb-4 flex items-center gap-2">
+                    <i data-lucide="fingerprint" class="w-4 h-4"></i>
+                    Data &amp; Risk Layer
+                </div>
+                <h2 class="text-3xl font-medium text-white tracking-tight mb-6">Trust fabric: on-chain attestations from real supply chains</h2>
+                <p class="text-slate-400 mb-6 leading-relaxed">
+                    Connect to ERP, GST, e-invoicing, and logistics data to build verifiable, time-stamped credit signals. We expose these as immutable on-chain attestations that protocols and institutions can consume trustlessly.
+                </p>
+                <div class="flex items-center gap-4 text-sm text-white font-medium mb-8">
+                    <div class="flex items-center gap-2">
+                        <div class="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]"></div> Enterprise
+                    </div>
+                    <i data-lucide="arrow-right" class="w-4 h-4 text-slate-600"></i>
+                    <div class="flex items-center gap-2">
+                        <div class="w-2 h-2 rounded-full bg-indigo-500 shadow-[0_0_8px_rgba(99,102,241,0.6)]"></div> CredSync
+                    </div>
+                    <i data-lucide="arrow-right" class="w-4 h-4 text-slate-600"></i>
+                    <div class="flex items-center gap-2">
+                        <div class="w-2 h-2 rounded-full bg-white shadow-[0_0_8px_rgba(255,255,255,0.6)]"></div> On-chain
+                    </div>
+                </div>
+                <a href="comingsoon.html" class="text-sm text-indigo-400 hover:text-indigo-300 flex items-center gap-1 group">
+                    Explore Attestation API
+                    <i data-lucide="chevron-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                </a>
+            </div>
+            
+            <div class="reveal-hidden stagger-2 rounded-xl bg-slate-900 border border-slate-800 p-1 overflow-hidden shadow-2xl hover:scale-[1.01] transition-transform duration-500">
+                <div class="bg-slate-950 rounded-lg p-6 font-mono text-xs overflow-x-auto h-[320px]">
+                    <div class="flex gap-1.5 mb-4">
+                        <div class="w-2.5 h-2.5 rounded-full bg-red-500/20 border border-red-500/50"></div>
+                        <div class="w-2.5 h-2.5 rounded-full bg-yellow-500/20 border border-yellow-500/50"></div>
+                        <div class="w-2.5 h-2.5 rounded-full bg-green-500/20 border border-green-500/50"></div>
+                    </div>
+                    <div id="typewriter-code" class="text-slate-300 leading-relaxed whitespace-pre font-mono"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 px-6 border-t border-white/5 bg-slate-900/20">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div class="order-2 lg:order-1 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="reveal-hidden stagger-1 p-6 rounded-lg bg-slate-950 border border-white/10 hover:border-indigo-500/50 transition-colors group">
+                    <div class="text-xs text-slate-500 uppercase tracking-wider mb-2 group-hover:text-indigo-400 transition-colors">NBFCs &amp; Banks</div>
+                    <div class="text-white font-medium">Originate &amp; distribute DTSCF programs</div>
+                </div>
+                <div class="reveal-hidden stagger-2 p-6 rounded-lg bg-slate-950 border border-white/10 hover:border-indigo-500/50 transition-colors group">
+                    <div class="text-xs text-slate-500 uppercase tracking-wider mb-2 group-hover:text-indigo-400 transition-colors">Credit Funds</div>
+                    <div class="text-white font-medium">Access short-duration, self-liquidating RWA yield</div>
+                </div>
+                <div class="reveal-hidden stagger-3 p-6 rounded-lg bg-slate-950 border border-white/10 hover:border-indigo-500/50 transition-colors sm:col-span-2 group">
+                    <div class="text-xs text-slate-500 uppercase tracking-wider mb-2 group-hover:text-indigo-400 transition-colors">DeFi Protocols</div>
+                    <div class="text-white font-medium">Plug RWA exposure directly into existing money markets via ERC-4626 vaults</div>
+                </div>
+            </div>
+
+            <div class="order-1 lg:order-2 reveal-hidden">
+                <div class="text-indigo-400 text-sm font-medium mb-4 flex items-center gap-2">
+                    <i data-lucide="coins" class="w-4 h-4"></i>
+                    Credit &amp; Liquidity Layer
+                </div>
+                <h2 class="text-3xl font-medium text-white tracking-tight mb-6">Capital fabric: programmable working-capital markets</h2>
+                <p class="text-slate-400 mb-6 leading-relaxed">
+                    Create invoice pools and receivables-backed vaults where institutions and DeFi protocols deploy capital. Support dynamic discounting, revolving limits, and automated repayments via tokenized cashflows.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 px-6 border-t border-white/5" id="solutions">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="reveal-hidden text-3xl font-medium text-white tracking-tight mb-12 text-center">Built for your ecosystem</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="reveal-hidden stagger-1 p-8 rounded-xl bg-slate-950 border border-white/10 hover-glow transition-all">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-xl font-medium text-white">Banks &amp; NBFCs</h3>
+                        <i data-lucide="building-2" class="w-6 h-6 text-indigo-400"></i>
+                    </div>
+                    <p class="text-sm font-medium text-indigo-200 mb-4">Launch deep-tier supply chain finance without rebuilding your stack.</p>
+                    <ul class="space-y-3 text-sm text-slate-400">
+                        <li class="flex items-start gap-3"><i data-lucide="check" class="w-4 h-4 text-indigo-500 mt-0.5"></i> Integrate LOS/ERP to onboard anchors.</li>
+                        <li class="flex items-start gap-3"><i data-lucide="check" class="w-4 h-4 text-indigo-500 mt-0.5"></i> Underwrite using GST &amp; payment data.</li>
+                    </ul>
+                </div>
+
+                <div class="reveal-hidden stagger-2 p-8 rounded-xl bg-slate-950 border border-white/10 hover-glow transition-all">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-xl font-medium text-white">Credit Funds &amp; HNIs</h3>
+                        <i data-lucide="briefcase" class="w-6 h-6 text-indigo-400"></i>
+                    </div>
+                    <p class="text-sm font-medium text-indigo-200 mb-4">Access transparent, short-duration RWA yield.</p>
+                    <ul class="space-y-3 text-sm text-slate-400">
+                        <li class="flex items-start gap-3"><i data-lucide="check" class="w-4 h-4 text-indigo-500 mt-0.5"></i> Curated pools of verified invoices.</li>
+                        <li class="flex items-start gap-3"><i data-lucide="check" class="w-4 h-4 text-indigo-500 mt-0.5"></i> Real-time on-chain performance reporting.</li>
+                    </ul>
+                </div>
+
+                <div class="reveal-hidden stagger-3 p-8 rounded-xl bg-slate-950 border border-white/10 hover-glow transition-all">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-xl font-medium text-white">DeFi Protocols</h3>
+                        <i data-lucide="cpu" class="w-6 h-6 text-indigo-400"></i>
+                    </div>
+                    <p class="text-sm font-medium text-indigo-200 mb-4">Plug real-world working-capital flows into DeFi.</p>
+                    <ul class="space-y-3 text-sm text-slate-400">
+                        <li class="flex items-start gap-3"><i data-lucide="check" class="w-4 h-4 text-indigo-500 mt-0.5"></i> Use invoice pools as collateral or yield.</li>
+                        <li class="flex items-start gap-3"><i data-lucide="check" class="w-4 h-4 text-indigo-500 mt-0.5"></i> Consume off-chain attestations via Oracles.</li>
+                    </ul>
+                </div>
+
+                <div class="reveal-hidden stagger-4 p-8 rounded-xl bg-slate-950 border border-white/10 hover-glow transition-all">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-xl font-medium text-white">Enterprises</h3>
+                        <i data-lucide="factory" class="w-6 h-6 text-indigo-400"></i>
+                    </div>
+                    <p class="text-sm font-medium text-indigo-200 mb-4">Extend credit to deepest tiers without balance-sheet bloat.</p>
+                    <ul class="space-y-3 text-sm text-slate-400">
+                        <li class="flex items-start gap-3"><i data-lucide="check" class="w-4 h-4 text-indigo-500 mt-0.5"></i> Offer early payment to suppliers dynamically.</li>
+                        <li class="flex items-start gap-3"><i data-lucide="check" class="w-4 h-4 text-indigo-500 mt-0.5"></i> Unified view of payables.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<section class="py-24 px-6 border-t border-white/5 bg-slate-900/10">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="reveal-hidden text-3xl font-medium text-white tracking-tight mb-16 text-center">Workflow Execution</h2>
+            
+            <div class="relative pl-8 border-l border-white/10 space-y-12">
+                
+                <div class="relative reveal-hidden stagger-1 group cursor-default">
+                    <div class="absolute -left-[39px] top-0 w-5 h-5 rounded-full bg-slate-900 border-2 border-slate-700 group-hover:border-indigo-500 group-hover:shadow-[0_0_15px_rgba(99,102,241,0.6)] group-hover:scale-110 transition-all duration-300 flex items-center justify-center z-10">
+                        <div class="w-1.5 h-1.5 bg-indigo-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </div>
+                    <h3 class="text-lg font-medium text-white mb-2 group-hover:text-indigo-400 transition-colors duration-300">1. Connect &amp; Ingest</h3>
+                    <p class="text-sm text-slate-400 group-hover:text-slate-300 transition-colors duration-300">Connect ERP, invoicing, GST, logistics, and banking systems via secure connectors.</p>
+                </div>
+
+                <div class="relative reveal-hidden stagger-2 group cursor-default">
+                    <div class="absolute -left-[39px] top-0 w-5 h-5 rounded-full bg-slate-900 border-2 border-slate-700 group-hover:border-indigo-500 group-hover:shadow-[0_0_15px_rgba(99,102,241,0.6)] group-hover:scale-110 transition-all duration-300 flex items-center justify-center z-10">
+                        <div class="w-1.5 h-1.5 bg-indigo-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </div>
+                    <h3 class="text-lg font-medium text-white mb-2 group-hover:text-indigo-400 transition-colors duration-300">2. Normalize &amp; Score</h3>
+                    <p class="text-sm text-slate-400 group-hover:text-slate-300 transition-colors duration-300">CredSync normalizes documents and generates risk &amp; reliability scores for each counterparty.</p>
+                </div>
+
+                <div class="relative reveal-hidden stagger-3 group cursor-default">
+                    <div class="absolute -left-[39px] top-0 w-5 h-5 rounded-full bg-slate-900 border-2 border-slate-700 group-hover:border-indigo-500 group-hover:shadow-[0_0_15px_rgba(99,102,241,0.6)] group-hover:scale-110 transition-all duration-300 flex items-center justify-center z-10">
+                        <div class="w-1.5 h-1.5 bg-indigo-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </div>
+                    <h3 class="text-lg font-medium text-white mb-2 group-hover:text-indigo-400 transition-colors duration-300">3. Publish Attestations</h3>
+                    <p class="text-sm text-slate-400 group-hover:text-slate-300 transition-colors duration-300">Verified events (invoice issued, goods delivered) are published as immutable on-chain attestations.</p>
+                </div>
+
+                <div class="relative reveal-hidden stagger-4 group cursor-default">
+                    <div class="absolute -left-[39px] top-0 w-5 h-5 rounded-full bg-slate-900 border-2 border-slate-700 group-hover:border-indigo-500 group-hover:shadow-[0_0_15px_rgba(99,102,241,0.6)] group-hover:scale-110 transition-all duration-300 flex items-center justify-center z-10">
+                        <div class="w-1.5 h-1.5 bg-indigo-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </div>
+                    <h3 class="text-lg font-medium text-white mb-2 group-hover:text-indigo-400 transition-colors duration-300">4. Compose &amp; Fund</h3>
+                    <p class="text-sm text-slate-400 group-hover:text-slate-300 transition-colors duration-300">Institutions compose pools via APIs. Capital providers fund pools via bank rails or stablecoins.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    
+    <section class="py-24 px-6 border-t border-white/5" id="developers">
+        <div class="max-w-7xl mx-auto text-center">
+            <h2 class="reveal-hidden text-3xl font-medium text-white tracking-tight mb-4">Designed for developers</h2>
+            <p class="reveal-hidden stagger-1 text-slate-400 mb-12">Integrate credit workflows programmatically with full sandbox support.</p>
+            
+           <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mb-12">
+    
+    <a href="docs.html#authentication" class="scale-hidden hover:scale-105 duration-300 p-4 rounded-lg border border-white/5 bg-slate-900/50 hover:bg-slate-900 hover:border-indigo-500/50 transition-all cursor-pointer block">
+        <div class="text-white font-medium text-sm mb-1">Authentication</div>
+        <div class="text-xs text-slate-500">API Keys &amp; OAuth</div>
+    </a>
+
+    <a href="docs.html#data-api" class="scale-hidden stagger-1 hover:scale-105 duration-300 p-4 rounded-lg border border-white/5 bg-slate-900/50 hover:bg-slate-900 hover:border-indigo-500/50 transition-all cursor-pointer block">
+        <div class="text-white font-medium text-sm mb-1">Data APIs</div>
+        <div class="text-xs text-slate-500">Entities &amp; Invoices</div>
+    </a>
+
+    <a href="docs.html#credit-workflow" class="scale-hidden stagger-2 hover:scale-105 duration-300 p-4 rounded-lg border border-white/5 bg-slate-900/50 hover:bg-slate-900 hover:border-indigo-500/50 transition-all cursor-pointer block">
+        <div class="text-white font-medium text-sm mb-1">Credit Workflow</div>
+        <div class="text-xs text-slate-500">Pools &amp; Disbursals</div>
+    </a>
+
+    <a href="docs.html#web3" class="scale-hidden stagger-3 hover:scale-105 duration-300 p-4 rounded-lg border border-white/5 bg-slate-900/50 hover:bg-slate-900 hover:border-indigo-500/50 transition-all cursor-pointer block">
+        <div class="text-white font-medium text-sm mb-1">Web3 Interface</div>
+        <div class="text-xs text-slate-500">Contracts &amp; Events</div>
+    </a>
+</div>
+
+            <a href="docs.html" class="reveal-hidden stagger-4 inline-flex items-center gap-2 px-6 py-3 bg-white text-black text-sm font-medium rounded-lg hover:bg-indigo-100 hover:scale-105 transition-all">
+                <i data-lucide="terminal" class="w-4 h-4"></i>
+                Start building
+            </a>
+        </div>
+    </section>
+
+    <section class="py-16 px-6 border-t border-white/5 bg-slate-900/30">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8 reveal-hidden">
+            <div class="text-left">
+                <h3 class="text-lg font-medium text-white mb-2">Built for regulated environments</h3>
+                <p class="text-sm text-slate-400 max-w-md">Data residency controls, SOC2 encryption standards, and clear regulatory alignment for institutional participants.</p>
+            </div>
+            <div class="flex gap-8">
+                <div class="flex items-center gap-2 text-sm text-slate-400">
+                    <i data-lucide="lock" class="w-4 h-4 text-indigo-400"></i> Bank-grade Security
+                </div>
+                <div class="flex items-center gap-2 text-sm text-slate-400">
+                    <i data-lucide="file-check-2" class="w-4 h-4 text-indigo-400"></i> Audited Contracts
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="border-t border-white/5 pt-16 pb-12 px-6 bg-slate-950">
+        <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 mb-12">
+            <div class="col-span-2 lg:col-span-2">
+                <a href="#" class="text-lg font-semibold tracking-tight text-white flex items-center gap-2 mb-6 group">
+    <?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="51 40 85 110" width="25px" height="32px" xmlns="http://www.w3.org/2000/svg">
+    <path fill="#ffffff" d="M117 42.7c-4 3.6-4.9 9.3-2.3 14.3l1.8 3.5-4.2 8.1-4.3 8.2-7.9.3c-7.1.4-8.3.7-11.7 3.5C83 85 81 88 79.7 94l-1.2 5.3-5.8 1.2c-5 1-6 .9-8.5-.7-3.7-2.5-7.4-2.3-10.6.7-3.6 3.3-3.5 7.8.3 11.6 1.6 1.6 4 2.9 5.3 2.9 3 0 6.7-2.6 7.7-5.3.6-1.5 2.3-2.4 6.7-3.3 5.6-1.2 6-1.1 7.4.8.8 1.2 3.1 3.8 5.2 5.9 4 4.1 11.5 6.5 17.3 5.6 3.3-.5 3.3-.5 6.4 6.7 3 6.8 3.1 7.3 1.7 10.1-2 3.8-2 5.8-.1 9.6 4.1 7.8 16.5 5.9 18.1-2.8 1-5.5-1.8-10.1-7.1-11.4-3.9-1-4.4-1.5-7.3-8.1l-3.1-7.1 3.8-4.3c7.1-8.1 7-19.4-.3-28.1l-2.8-3.3 4.6-8.4c4.4-8 4.7-8.4 8.7-9 8.1-1.3 12.2-9.4 8.7-17.1-2.7-5.9-12.6-7.5-17.8-2.8m11.9 4.4c2.9 2.7 2.4 6.6-1 9.1-2.5 1.9-2.8 1.9-5.8.4-2.6-1.4-3.1-2.3-3.1-5.1 0-5.8 5.6-8.3 9.9-4.4m-23.2 39c6.9 3.4 9.5 10.4 6.3 17.6-2.2 5-6.1 7.3-12.5 7.3-3.7 0-5.2-.6-8.1-3.3-7.9-7.2-5-19.6 5.2-22.7 4.2-1.2 4.4-1.2 9.1 1.1m-44.3 17.5c2 .8 2.1 3.8.1 5.4-2.1 1.7-5.5.3-5.5-2.4 0-3.5 1.7-4.4 5.4-3m63.3 34.3c1.4 3 .2 5.7-3.3 7.3-3.1 1.4-6.4-1.3-6.4-5.3 0-5.1 7.3-6.6 9.7-2"/>
+</svg>
+    CredSync
+</a>
+                <p class="text-sm text-slate-500 max-w-xs mb-6">
+                    Modular on-chain credit infrastructure for the next generation of global trade finance.
+                </p>
+                <div class="flex gap-4">
+                    <a href="#" aria-label="X (Twitter)">
+        <svg viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 text-slate-400 hover:text-white transition-colors">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
+        </svg>
+    </a>
+                    <a href="#" class="text-slate-500 hover:text-white transition-colors hover:scale-110 transform duration-200"><i data-lucide="linkedin" class="w-5 h-5"></i></a>
+                    <a href="#" class="text-slate-500 hover:text-white transition-colors hover:scale-110 transform duration-200"><i data-lucide="github" class="w-5 h-5"></i></a>
+                </div>
+            </div>
+            
+            <div>
+                <h4 class="text-white text-sm font-medium mb-4">Platform</h4>
+                <ul class="space-y-3 text-sm text-slate-500">
+                    <li><a href="comingsoon.html" class="hover:text-indigo-400 transition-colors">Data Layer</a></li>
+                    <li><a href="comingsoon.html" class="hover:text-indigo-400 transition-colors">Liquidity Pools</a></li>
+                    <li><a href="comingsoon.html" class="hover:text-indigo-400 transition-colors">Settlement</a></li>
+                    <li><a href="comingsoon.html" class="hover:text-indigo-400 transition-colors">Security</a></li>
+                </ul>
+            </div>
+            
+            <div>
+                <h4 class="text-white text-sm font-medium mb-4">Developers</h4>
+                <ul class="space-y-3 text-sm text-slate-500">
+                    <li><a href="docs.html" class="hover:text-indigo-400 transition-colors">Documentation</a></li>
+                    <li><a href="#" class="hover:text-indigo-400 transition-colors">API Reference</a></li>
+                    <li><a href="#" class="hover:text-indigo-400 transition-colors">Github</a></li>
+                    <li><a href="#" class="hover:text-indigo-400 transition-colors">Status</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="text-white text-sm font-medium mb-4">Company</h4>
+                <ul class="space-y-3 text-sm text-slate-500">
+                    <li><a href="#" class="hover:text-indigo-400 transition-colors">About</a></li>
+                    <li><a href="blog.html" class="hover:text-indigo-400 transition-colors">Blog</a></li>
+                    <li><a href="contact.html" class="hover:text-indigo-400 transition-colors">Contact</a></li>
+                    <li><a href="career.html" class="hover:text-indigo-400 transition-colors">Careers</a></li>
+                    <li><a href="#" class="hover:text-indigo-400 transition-colors">Privacy Policy</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p class="text-xs text-slate-600">© 2026 CredSync Inc. All rights reserved.</p>
+            <div class="flex gap-6">
+                <a href="#" class="text-xs text-slate-400 hover:text-white transition-colors">Download Pitch Deck</a>
+                <a href="#" class="text-xs text-indigo-400 hover:text-indigo-300 transition-colors">Join Liquidity Program</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons({
+            attrs: { 'stroke-width': 1.5 }
+        });
+
+        // --- Scroll Animation Observer ---
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    if (entry.target.classList.contains('reveal-hidden')) {
+                        entry.target.classList.add('reveal-visible');
+                    }
+                    if (entry.target.classList.contains('scale-hidden')) {
+                        entry.target.classList.add('scale-visible');
+                    }
+                    // Trigger typewriter if it's the code block container
+                    if (entry.target.id === 'typewriter-code' || entry.target.querySelector('#typewriter-code')) {
+                        startTypewriter();
+                    }
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal-hidden, .scale-hidden').forEach(el => observer.observe(el));
+
+        // --- Typewriter Effect for Code ---
+        const codeContent = `// Fetching verifiable invoice attestation
+const invoiceData = await credSync.attestations.get({
+  id: "inv_88293_gst",
+  include: ["tax_status", "shipment_proof"]
+});
+
+// Response: Verified On-Chain
+{
+  "status": "VERIFIED",
+  "risk_score": 850,
+  "timestamp": "2023-10-24T14:30:00Z",
+  "hash": "0x7f...a9c2"
+}`;
+
+        let typeIndex = 0;
+        let hasTyped = false;
+
+        function startTypewriter() {
+            if (hasTyped) return;
+            hasTyped = true;
+            const element = document.getElementById('typewriter-code');
+            element.classList.add('typing-cursor');
+            
+            function type() {
+                if (typeIndex < codeContent.length) {
+                    let char = codeContent.charAt(typeIndex);
+                    // Add syntax highlighting roughly based on common patterns
+                    if (codeContent.substring(typeIndex).startsWith('const ')) {
+                        element.innerHTML += '<span class="text-purple-400">c</span>';
+                    } else {
+                        element.innerHTML += char; 
+                    }
+                    typeIndex++;
+                    setTimeout(type, 15 + Math.random() * 20); // Random typing speed
+                } else {
+                    element.classList.remove('typing-cursor');
+                    // Simple syntax highlighting replacement after typing is done for cleanliness
+                    element.innerHTML = element.innerText
+                        .replace(/const|await/g, '<span class="text-purple-400">$&</span>')
+                        .replace(/"(.*?)"/g, '<span class="text-green-400">"$1"</span>')
+                        .replace(/\/\/.*/g, '<span class="text-slate-500">$&</span>')
+                        .replace(/[0-9]+/g, '<span class="text-orange-400">$&</span>');
+                }
+            }
+            type();
+        }
+        
+        // --- Navbar Blur on Scroll ---
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.classList.add('bg-slate-950/90', 'shadow-md');
+                nav.classList.remove('bg-slate-950/80');
+            } else {
+                nav.classList.remove('bg-slate-950/90', 'shadow-md');
+                nav.classList.add('bg-slate-950/80');
+            }
+        });
+
+        // Trigger typewriter observer specifically
+        const codeSection = document.getElementById('typewriter-code').closest('div');
+        observer.observe(codeSection);
+
+    </script>
+
+</body>
+</html>

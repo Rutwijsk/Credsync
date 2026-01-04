@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Team | CredSync</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        /* Base Settings - Matching index.html */
+        body {
+            background-color: #020617; /* Slate 950 */
+            color: #e2e8f0; /* Slate 200 */
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- Backgrounds --- */
+        .bg-grid {
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+            mask-image: linear-gradient(to bottom, transparent, 10%, black, 90%, transparent);
+            -webkit-mask-image: linear-gradient(to bottom, transparent, 5%, black, 90%, transparent);
+        }
+
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Input Styling */
+        .form-input {
+            background: rgba(2, 6, 23, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #6366f1; /* Indigo 500 */
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+        }
+        
+        /* Animations */
+        .reveal-hidden {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s cubic-bezier(0.5, 0, 0, 1);
+        }
+        .reveal-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .stagger-1 { transition-delay: 100ms; }
+        .stagger-2 { transition-delay: 200ms; }
+    </style>
+</head>
+<body class="relative min-h-screen flex flex-col">
+
+    <div class="fixed inset-0 z-0 pointer-events-none bg-grid opacity-100 h-full w-full"></div>
+    <div class="fixed top-[-10%] right-[-10%] w-[600px] h-[600px] bg-indigo-600/10 rounded-full blur-[120px] pointer-events-none z-0"></div>
+    <div class="fixed bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-indigo-600/5 rounded-full blur-[100px] pointer-events-none z-0"></div>
+
+    <nav class="w-full z-50 border-b border-white/5 bg-slate-950/50 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <a href="index.html" class="text-lg font-semibold tracking-tight text-white flex items-center gap-2 group">
+                <div class="w-5 h-5 bg-indigo-500 rounded-sm flex items-center justify-center group-hover:bg-indigo-400 transition-colors">
+                    <div class="w-2.5 h-2.5 bg-white rounded-[1px]"></div>
+                </div>
+                CredSync
+            </a>
+            <a href="index.html" class="text-sm text-slate-400 hover:text-white flex items-center gap-2 transition-colors">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Home
+            </a>
+        </div>
+    </nav>
+
+    <main class="flex-grow flex items-center justify-center relative z-10 px-6 py-12">
+        <div class="w-full max-w-5xl grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
+            
+            <div class="reveal-hidden">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-300 text-xs font-medium mb-6">
+                    <span class="relative flex h-2 w-2">
+                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+                      <span class="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
+                    </span>
+                    Sales &amp; Partnerships
+                </div>
+                
+                <h1 class="text-4xl md:text-5xl font-medium tracking-tight text-white mb-6">
+                    Ready to modernize your <br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-white">credit infrastructure?</span>
+                </h1>
+                
+                <p class="text-lg text-slate-400 mb-8 leading-relaxed">
+                    Whether you are a Bank, an NBFC, or a DeFi protocol, our team can help you design programmable credit workflows tailored to your ecosystem.
+                </p>
+
+                <div class="space-y-6">
+                    <div class="flex items-start gap-4">
+                        <div class="w-10 h-10 rounded-lg bg-slate-900 border border-white/10 flex items-center justify-center shrink-0">
+                            <i data-lucide="mail" class="w-5 h-5 text-indigo-400"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-white font-medium mb-1">Direct Communication</h3>
+                            <p class="text-sm text-slate-500">Skip the queue. We usually respond within 24 hours.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <div class="w-10 h-10 rounded-lg bg-slate-900 border border-white/10 flex items-center justify-center shrink-0">
+                            <i data-lucide="terminal" class="w-5 h-5 text-indigo-400"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-white font-medium mb-1">Developer Support</h3>
+                            <p class="text-sm text-slate-500">Need API keys or sandbox access? Request it directly here.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reveal-hidden stagger-1 w-full">
+                <div class="glass-panel p-8 rounded-2xl relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none group-hover:bg-indigo-500/15 transition-all duration-500"></div>
+
+                    <form id="contactForm" class="relative z-10 space-y-5">
+    <div class="grid grid-cols-2 gap-4">
+        <div class="space-y-2">
+            <label for="firstName" class="text-xs font-medium text-slate-300 uppercase tracking-wide">First Name</label>
+            <input type="text" id="firstName" name="FirstName" required class="form-input w-full px-4 py-3 rounded-lg text-sm placeholder-slate-600" placeholder="Jane">
+        </div>
+        <div class="space-y-2">
+            <label for="lastName" class="text-xs font-medium text-slate-300 uppercase tracking-wide">Last Name</label>
+            <input type="text" id="lastName" name="LastName" required class="form-input w-full px-4 py-3 rounded-lg text-sm placeholder-slate-600" placeholder="Doe">
+        </div>
+    </div>
+
+    <div class="space-y-2">
+        <label for="email" class="text-xs font-medium text-slate-300 uppercase tracking-wide">Work Email</label>
+        <input type="email" id="email" name="Email" required class="form-input w-full px-4 py-3 rounded-lg text-sm placeholder-slate-600" placeholder="jane@company.com">
+    </div>
+
+    <div class="space-y-2">
+        <label for="type" class="text-xs font-medium text-slate-300 uppercase tracking-wide">I represent a...</label>
+        <div class="relative">
+            <select id="type" name="Type" class="form-input w-full px-4 py-3 rounded-lg text-sm text-slate-300 appearance-none cursor-pointer">
+                <option>Bank / Financial Institution</option>
+                <option>DeFi Protocol / DAO</option>
+                <option>Fintech / Credit Fund</option>
+                <option>Enterprise (Supply Chain)</option>
+                <option>Other</option>
+            </select>
+            <i data-lucide="chevron-down" class="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 pointer-events-none"></i>
+        </div>
+    </div>
+
+    <div class="space-y-2">
+        <label for="message" class="text-xs font-medium text-slate-300 uppercase tracking-wide">How can we help?</label>
+        <textarea id="message" name="Message" rows="4" required class="form-input w-full px-4 py-3 rounded-lg text-sm placeholder-slate-600 resize-none" placeholder="Tell us about your use case..."></textarea>
+    </div>
+
+    <button type="submit" id="submitBtn" class="w-full py-3.5 bg-white text-black font-semibold rounded-lg hover:bg-indigo-50 transition-all flex items-center justify-center gap-2 group mt-2">
+        <span>Send Message</span>
+        <i data-lucide="send" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+    </button>
+
+    <div id="successMessage" class="hidden absolute inset-0 bg-[#0f172a] flex-col items-center justify-center text-center z-20 rounded-2xl animate-fade-in">
+        <div class="w-16 h-16 bg-green-500/10 rounded-full flex items-center justify-center mb-4 border border-green-500/20">
+            <i data-lucide="check" class="w-8 h-8 text-green-400"></i>
+        </div>
+        <h3 class="text-xl font-medium text-white mb-2">Message Sent</h3>
+        <p class="text-sm text-slate-400 max-w-xs mx-auto">Thank you for reaching out. A member of our team will contact you shortly.</p>
+        <button type="button" onclick="resetForm()" class="mt-6 text-xs text-indigo-400 hover:text-white transition-colors">Send another</button>
+    </div>
+</form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="py-8 text-center text-xs text-slate-600 border-t border-white/5 relative z-10 bg-slate-950">
+        &copy; 2024 CredSync Inc. Secure Data Transmission.
+    </footer>
+
+    <script>
+    lucide.createIcons();
+
+    // Reveal Animation on Load
+    window.addEventListener('load', () => {
+        const elements = document.querySelectorAll('.reveal-hidden');
+        elements.forEach(el => el.classList.add('reveal-visible'));
+    });
+
+    // --- GOOGLE SHEETS INTEGRATION ---
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxeLWkm90b0JuSxkI-Tea7WB2grIdXKa2o82rrIqqQu2xz4lwNrZV7DtSLPRRMv6KIiIw/exec'; // <--- PASTE HERE
+    const form = document.getElementById('contactForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const successMessage = document.getElementById('successMessage');
+
+    form.addEventListener('submit', e => {
+        e.preventDefault();
+        
+        // 1. Loading State
+        const originalBtnText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i> Sending...';
+        lucide.createIcons();
+        submitBtn.disabled = true;
+
+        // 2. Send Data
+        fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+            .then(response => {
+                // Success
+                successMessage.classList.remove('hidden');
+                successMessage.classList.add('flex');
+                submitBtn.innerHTML = originalBtnText;
+                submitBtn.disabled = false;
+            })
+            .catch(error => {
+                // Error
+                console.error('Error!', error.message);
+                alert('Something went wrong. Please try again.');
+                submitBtn.innerHTML = originalBtnText;
+                submitBtn.disabled = false;
+            });
+    });
+
+    function resetForm() {
+        successMessage.classList.add('hidden');
+        successMessage.classList.remove('flex');
+        form.reset();
+    }
+</script>
+</body>
+</html>
